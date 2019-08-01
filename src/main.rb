@@ -80,6 +80,7 @@ end
 
 def setup
   puts "setting up pins"
+  RPi::GPIO.set_warnings(false)
   RPi::GPIO.set_numbering :board
   RPi::GPIO.setup SERVO, :as => :output
   RPi::GPIO.setup BLUE_LED, :as => :output, :initialize => :low
