@@ -109,4 +109,5 @@ pwm.stop
 RPi::GPIO.set_low BLUE_LED
 RPi::GPIO.set_low GREEN_LED
 RPi::GPIO.set_low YELLOW_LED
+RPi::GPIO.set_low RED_LED
 puts "done."
