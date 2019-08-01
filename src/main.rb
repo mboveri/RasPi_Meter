@@ -53,6 +53,15 @@ def flash_led(pin_num)
   RPi::GPIO.set_low pin_num
 end
 
+def turn_on_led(metric)
+  # turn off everything
+  RPi::GPIO.set_low BLUE_LED
+  RPi::GPIO.set_low GREEN_LED
+  RPi::GPIO.set_low YELLOW_LED
+  # turn on the one we want
+  RPi::GPIO.set_high metric.led_pin
+end
+
 def set_angle(pwm, angle)
   # 2.5 is the minimum, a.k.a. 0 degrees
   duty = angle / 18 + 2.5
@@ -80,6 +89,8 @@ unless metrics.nil?
   worst_metric = find_worst_metric(metrics)
   pwm.start(0)
   set_angle(pwm, worst_metric.percent)
+  turn_on_light(worst_metric)
+  sleep(10)
 end
 
 pwm.stop
