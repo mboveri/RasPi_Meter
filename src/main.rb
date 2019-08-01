@@ -31,9 +31,9 @@ def call_new_relic()
     return nil
   end
   event = JSON.parse(response.body)['results'].first['events'].first
-  mem = event['mem.percent'] * 100
-  cpu = event['cpus.percent'] * 100
-  disk = event['disk.percent'] * 100
+  mem = (event['mem.percent'] * 100).ceil
+  cpu = (event['cpus.percent'] * 100).ceil
+  disk = (event['disk.percent'] * 100).ceil
   metrics = ClusterMetrics.new(
     Metric.new(cpu, BLUE_LED),
     Metric.new(mem, GREEN_LED),
