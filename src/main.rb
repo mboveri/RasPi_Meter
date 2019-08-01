@@ -29,6 +29,7 @@ def call_new_relic()
   unless response.success?
     "Failed to call new relic! Received status: #{response.status} and body #{response.body}" 
     return nil
+  end
   
   event = response.body.to_json['body']['events'].first['event']
   mem = event['mem.percent'] * 100
