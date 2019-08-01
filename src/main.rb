@@ -62,12 +62,15 @@ def set_angle(pwm, angle)
   pwm.duty_cycle = 0
 end
 
-puts "starting"
-PIN_NUM = 03
-PWM_FREQ = 50
+puts "setting up pins"
 RPi::GPIO.set_numbering :board
-RPi::GPIO.setup PIN_NUM, :as => :output
-pwm = RPi::GPIO::PWM.new(PIN_NUM, PWM_FREQ)
+RPi::GPIO.setup SERVO, :as => :output
+RPi::GPIO.setup BLUE_LED, :as => :output
+RPi::GPIO.setup GREEN_LED, :as => :output
+RPi::GPIO.setup YELLOW_LED, :as => :output
+
+PWM_FREQ = 50
+pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 
 call_new_relic
 
