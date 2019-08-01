@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   clusterclock:
-    image: clusterclock:1.0
+    image: scghost/clusterclock:1.0
     build:
       context: .
     env_file: local.env

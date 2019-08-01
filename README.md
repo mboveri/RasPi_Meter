@@ -6,4 +6,5 @@ Configure secrets in `local.env`. See `local.env.example` for an example of what
 
 ```
 docker-compose up --build clusterclock
+docker push scghost/clusterclock:1.0
 ```
