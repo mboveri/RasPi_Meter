@@ -26,7 +26,7 @@ def flash_led()
   sleep(5)
 end
 
-def set_angle(pwm, angle):
+def set_angle(pwm, angle)
   duty = angle / 18 + 2
   pwm.duty_cycle = duty
   sleep(3)
