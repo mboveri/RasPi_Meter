@@ -1,5 +1,6 @@
 require 'faraday'
 require 'json'
+require 'rpi_gpio'
 
 account_id = ENV['NEW_RELIC_ACCOUNT_ID']
 query = ENV['INSIGHTS_QUERY']
@@ -18,3 +19,4 @@ RPi::GPIO.setup PIN_NUM, :as => :output
 RPi::GPIO.set_high PIN_NUM
 sleep(5)
 RPi::GPIO.set_low PIN_NUM
+sleep(5)
