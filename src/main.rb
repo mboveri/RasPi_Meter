@@ -118,7 +118,14 @@ def debug(pwm)
 end
 
 metrics = call_new_relic
-pwm = setup
+RPi::GPIO.set_warnings(false)
+RPi::GPIO.set_numbering :board
+RPi::GPIO.setup SERVO, :as => :output, :initialize => :low
+RPi::GPIO.setup BLUE_LED, :as => :output, :initialize => :low
+RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
+RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
+RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
+pwm =RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 debug(pwm)
 
 # unless metrics.nil?
