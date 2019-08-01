@@ -1,4 +1,4 @@
-FROM arm64v8/ruby:2.6-alpine
+FROM arm32v7/ruby:2.6
 WORKDIR /opt/app
 
 COPY src/Gemfile Gemfile
