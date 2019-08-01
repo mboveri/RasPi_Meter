@@ -54,6 +54,7 @@ def flash_led(pin_num)
 end
 
 def turn_on_led(metric)
+  puts "Turning on LED at pin #{metric.led_pin}"
   # turn off everything
   RPi::GPIO.set_low BLUE_LED
   RPi::GPIO.set_low GREEN_LED
@@ -89,7 +90,7 @@ unless metrics.nil?
   worst_metric = find_worst_metric(metrics)
   pwm.start(0)
   set_angle(pwm, worst_metric.percent)
-  turn_on_light(worst_metric)
+  turn_on_led(worst_metric)
   sleep(10)
 end
 
