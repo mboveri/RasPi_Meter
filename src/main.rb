@@ -78,36 +78,54 @@ def set_angle(pwm, angle)
   pwm.duty_cycle = 0
 end
 
-puts "setting up pins"
-RPi::GPIO.set_numbering :board
-RPi::GPIO.setup SERVO, :as => :output
-RPi::GPIO.setup BLUE_LED, :as => :output, :initialize => :low
-RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
-RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
-RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
-pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
-
-metrics = call_new_relic
-
-turn_on_led(BLUE_LED)
-sleep(3)
-turn_on_led(GREEN_LED)
-sleep(3)
-turn_on_led(YELLOW_LED)
-sleep(3)
-turn_on_led(RED_LED)
-sleep(3)
-unless metrics.nil?
-  worst_metric = find_worst_metric(metrics)
-  pwm.start(0)
-  set_angle(pwm, worst_metric.percent)
-  turn_on_led(worst_metric.led_pin)
-  sleep(10)
+def setup
+  puts "setting up pins"
+  RPi::GPIO.set_numbering :board
+  RPi::GPIO.setup SERVO, :as => :output
+  RPi::GPIO.setup BLUE_LED, :as => :output, :initialize => :low
+  RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
+  RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
+  RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
+   RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 end
 
-pwm.stop
-RPi::GPIO.set_low BLUE_LED
-RPi::GPIO.set_low GREEN_LED
-RPi::GPIO.set_low YELLOW_LED
-RPi::GPIO.set_low RED_LED
+def teardown(pwm)
+  pwm.stop
+  RPi::GPIO.set_low BLUE_LED
+  RPi::GPIO.set_low GREEN_LED
+  RPi::GPIO.set_low YELLOW_LED
+  RPi::GPIO.set_low RED_LED
+end
+
+def debug(pwm)
+  puts "testing LEDs"
+  turn_on_led(BLUE_LED)
+  sleep(1)
+  turn_on_led(GREEN_LED)
+  sleep(1)
+  turn_on_led(YELLOW_LED)
+  sleep(1)
+  turn_on_led(RED_LED)
+
+  puts "testing servo"
+  set_angle(pwm, 0)
+  sleep(5)
+  set_angle(pwm, 70)
+  sleep(20)
+  set_angle(pwm, 85)
+  sleep(20)
+end
+
+metrics = call_new_relic
+pwm = setup
+debug(pwm)
+
+# unless metrics.nil?
+#   worst_metric = find_worst_metric(metrics)
+#   pwm.start(0)
+#   set_angle(pwm, worst_metric.percent)
+#   turn_on_led(worst_metric.led_pin)
+# end
+
+teardown
 puts "done."
