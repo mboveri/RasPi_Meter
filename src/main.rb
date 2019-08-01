@@ -34,8 +34,8 @@ def call_new_relic()
   cpu = event['cpus.percent'] * 100
   disk = event['disk.percent'] * 100
   metrics = ClusterMetrics.new(
-    Metric.new(cpu, BLUE_LED)
-    Metric.new(mem, GREEN_LED)
+    Metric.new(cpu, BLUE_LED),
+    Metric.new(mem, GREEN_LED),
     Metric.new(disk, YELLOW_LED)
   )
   puts metrics
