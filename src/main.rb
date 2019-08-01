@@ -17,7 +17,6 @@ def call_new_relic()
 end
 
 def flash_led()
-  RPi::GPIO.set_numbering :board
   RPi::GPIO.setup PIN_NUM, :as => :output
   RPi::GPIO.set_high PIN_NUM
   sleep(5)
@@ -34,8 +33,10 @@ end
 
 PIN_NUM = 03
 PWM_FREQ = 50
+RPi::GPIO.set_numbering :board
+RPi::GPIO.setup PIN_NUM, :as => :output
 pwm = RPi::GPIO::PWM.new(PIN_NUM, PWM_FREQ)
 pwm.start(0)
-set_angle(30)
+set_angle(pwm, 30)
 pwm.stop
 RPi::GPIO.clean_up
