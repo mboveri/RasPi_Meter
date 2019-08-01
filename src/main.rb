@@ -30,9 +30,7 @@ def call_new_relic()
     "Failed to call new relic! Received status: #{response.status} and body #{response.body}" 
     return nil
   end
-  puts response.body
-  puts response.body.to_json
-  event = response.body.to_json['body']['events'].first['event']
+  event = response.body.to_json['results'].first['events'].first['event']
   mem = event['mem.percent'] * 100
   cpu = event['cpus.percent'] * 100
   disk = event['disk.percent'] * 100
