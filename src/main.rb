@@ -2,8 +2,20 @@ require 'faraday'
 require 'json'
 require 'rpi_gpio'
 
+Metric = Struct.new(:percent, :led_pin)
+ClusterMetrics = Struct.new(:cpu, :memory, :disk)
 
+# GPIO pins
+SERVO = 3
+BLUE_LED = 5
+GREEN_LED = 7
+YELLOW_LED = 11
+RED_LED = 13
+
+# calls new relic to find cluster metrics
+# returns nil if it fails
 def call_new_relic()
+  puts "Calling new relic"
   account_id = ENV['NEW_RELIC_ACCOUNT_ID']
   query = ENV['INSIGHTS_QUERY']
   headers =  { 
@@ -11,9 +23,23 @@ def call_new_relic()
     'Accept' => 'application/json'
   }
   url = "https://insights-api.newrelic.com/v1/accounts/#{account_id}/query?nrql=#{query}"
-
+  puts "calling #{url}"
   response = Faraday.get(url, nil, headers)
-  puts response.body
+  unless response.success?
+    "Failed to call new relic! Received status: #{response.status} and body #{response.body}" 
+    return nil
+  
+  event = response.body.to_json['body']['events'].first['event']
+  mem = event['mem.percent'] * 100
+  cpu = event['cpus.percent'] * 100
+  disk = event['disk.percent'] * 100
+  metrics = ClusterMetrics.new(
+    Metric.new(cpu, BLUE_LED)
+    Metric.new(mem, GREEN_LED)
+    Metric.new(disk, YELLOW_LED)
+  )
+  puts metrics
+  metrics
 end
 
 def flash_led()
