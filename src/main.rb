@@ -39,7 +39,7 @@ def call_new_relic()
     Metric.new(mem, GREEN_LED),
     Metric.new(disk, YELLOW_LED)
   )
-  puts metrics
+  puts "mem: #{metrics.mem}, cpu: #{metrics.cpu}, disk: #{metrics.disk}"
   metrics
 end
 
@@ -76,12 +76,11 @@ def set_angle(pwm, angle)
 end
 
 puts "setting up pins"
-RPi::GPIO.reset
 RPi::GPIO.set_numbering :board
 RPi::GPIO.setup SERVO, :as => :output
-RPi::GPIO.setup BLUE_LED, :as => :output
-RPi::GPIO.setup GREEN_LED, :as => :output
-RPi::GPIO.setup YELLOW_LED, :as => :output
+RPi::GPIO.setup BLUE_LED, :as => :output, :initialize => :low
+RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
+RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
 pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 
 metrics = call_new_relic
@@ -95,5 +94,5 @@ unless metrics.nil?
 end
 
 pwm.stop
-RPi::GPIO.reset
+RPi::GPIO.clean_up
 puts "done."
