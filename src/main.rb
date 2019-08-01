@@ -86,7 +86,7 @@ def setup
   RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
   RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
   RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
-   RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
+  RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 end
 
 def teardown(pwm)
@@ -127,5 +127,5 @@ debug(pwm)
 #   turn_on_led(worst_metric.led_pin)
 # end
 
-teardown
+teardown(pwm)
 puts "done."
