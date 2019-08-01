@@ -11,6 +11,7 @@ BLUE_LED = 5
 GREEN_LED = 7
 YELLOW_LED = 11
 RED_LED = 13
+PWM_FREQ = 50
 
 # calls new relic to find cluster metrics
 # returns nil if it fails
@@ -42,12 +43,10 @@ def call_new_relic()
   metrics
 end
 
-def flash_led()
-  RPi::GPIO.setup PIN_NUM, :as => :output
-  RPi::GPIO.set_high PIN_NUM
+def flash_led(pin_num)
+  RPi::GPIO.set_high pin_num
   sleep(5)
-  RPi::GPIO.set_low PIN_NUM
-  sleep(5)
+  RPi::GPIO.set_low pin_num
 end
 
 def set_angle(pwm, angle)
@@ -68,8 +67,6 @@ RPi::GPIO.setup SERVO, :as => :output
 RPi::GPIO.setup BLUE_LED, :as => :output
 RPi::GPIO.setup GREEN_LED, :as => :output
 RPi::GPIO.setup YELLOW_LED, :as => :output
-
-PWM_FREQ = 50
 pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 
 call_new_relic
