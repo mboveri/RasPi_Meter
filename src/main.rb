@@ -3,7 +3,7 @@ require 'json'
 require 'rpi_gpio'
 
 Metric = Struct.new(:percent, :led_pin)
-ClusterMetrics = Struct.new(:cpu, :memory, :disk)
+ClusterMetrics = Struct.new(:cpu, :mem, :disk)
 
 # GPIO pins
 SERVO = 3
