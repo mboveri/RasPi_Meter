@@ -2,6 +2,9 @@ require 'faraday'
 require 'json'
 require 'rpi_gpio'
 
+# always flush STDOUT immediately
+$stdout.sync = true
+
 Metric = Struct.new(:percent, :led_pin)
 ClusterMetrics = Struct.new(:cpu, :mem, :disk)
 
@@ -53,14 +56,14 @@ def flash_led(pin_num)
   RPi::GPIO.set_low pin_num
 end
 
-def turn_on_led(metric)
-  puts "Turning on LED at pin #{metric.led_pin}"
+def turn_on_led(pin)
+  puts "Turning on LED at pin #{pin}"
   # turn off everything
   RPi::GPIO.set_low BLUE_LED
   RPi::GPIO.set_low GREEN_LED
   RPi::GPIO.set_low YELLOW_LED
   # turn on the one we want
-  RPi::GPIO.set_high metric.led_pin
+  RPi::GPIO.set_high pin
 end
 
 def set_angle(pwm, angle)
@@ -81,15 +84,24 @@ RPi::GPIO.setup SERVO, :as => :output
 RPi::GPIO.setup BLUE_LED, :as => :output, :initialize => :low
 RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
 RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
+RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
 pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 
 metrics = call_new_relic
 
+turn_on_led(BLUE_LED)
+sleep(3)
+turn_on_led(GREEN_LED)
+sleep(3)
+turn_on_led(YELLOW_LED)
+sleep(3)
+turn_on_led(RED_LED)
+sleep(3)
 unless metrics.nil?
   worst_metric = find_worst_metric(metrics)
   pwm.start(0)
   set_angle(pwm, worst_metric.percent)
-  turn_on_led(worst_metric)
+  turn_on_led(worst_metric.led_pin)
   sleep(10)
 end
 
