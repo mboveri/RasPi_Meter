@@ -87,7 +87,9 @@ def setup
   RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
   RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
   RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
-  RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
+  pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
+  pwm.start(0)
+  pwm
 end
 
 def teardown(pwm)
@@ -117,20 +119,12 @@ def debug(pwm)
   sleep(20)
 end
 
-metrics = call_new_relic
-RPi::GPIO.set_warnings(false)
-RPi::GPIO.set_numbering :board
-RPi::GPIO.setup SERVO, :as => :output, :initialize => :low
-RPi::GPIO.setup BLUE_LED, :as => :output, :initialize => :low
-RPi::GPIO.setup GREEN_LED, :as => :output, :initialize => :low
-RPi::GPIO.setup YELLOW_LED, :as => :output, :initialize => :low
-RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
-pwm =RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
+pwm = setup
 debug(pwm)
 
+# metrics = call_new_relic
 # unless metrics.nil?
 #   worst_metric = find_worst_metric(metrics)
-#   pwm.start(0)
 #   set_angle(pwm, worst_metric.percent)
 #   turn_on_led(worst_metric.led_pin)
 # end
