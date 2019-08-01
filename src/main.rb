@@ -17,7 +17,6 @@ def call_new_relic()
 end
 
 def flash_led()
-  PIN_NUM = 03
   RPi::GPIO.set_numbering :board
   RPi::GPIO.setup PIN_NUM, :as => :output
   RPi::GPIO.set_high PIN_NUM
