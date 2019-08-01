@@ -94,5 +94,7 @@ unless metrics.nil?
 end
 
 pwm.stop
-RPi::GPIO.clean_up
+RPi::GPIO.set_low BLUE_LED
+RPi::GPIO.set_low GREEN_LED
+RPi::GPIO.set_low YELLOW_LED
 puts "done."
