@@ -25,9 +25,15 @@ def flash_led()
 end
 
 def set_angle(pwm, angle)
-  duty = angle / 18 + 2
-  puts "Setting servo to #{angle} with duty cycle #{duty}"
+  # 2.5 is the minimum, a.k.a. 0 degrees
+  duty = angle / 18 + 2.5
+  puts "Setting servo to #{angle} degrees with duty cycle #{duty}"
+  # continuosly move towards the desired angle
   pwm.duty_cycle = duty
+  # let it get to the angle
+  sleep(1)
+  # stop moving
+  pwm.duty_cycle = 0
 end
 
 puts "starting"
@@ -36,6 +42,8 @@ PWM_FREQ = 50
 RPi::GPIO.set_numbering :board
 RPi::GPIO.setup PIN_NUM, :as => :output
 pwm = RPi::GPIO::PWM.new(PIN_NUM, PWM_FREQ)
+
+call_new_relic
 
 pwm.start(0)
 set_angle(pwm, 0)
