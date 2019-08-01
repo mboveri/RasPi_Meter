@@ -43,6 +43,10 @@ def call_new_relic()
   metrics
 end
 
+def find_worst_metric(metrics)
+  [metrics.cpu, metrics.mem, metrics.disk].max_by(&:percent)
+end
+
 def flash_led(pin_num)
   RPi::GPIO.set_high pin_num
   sleep(5)
@@ -62,6 +66,7 @@ def set_angle(pwm, angle)
 end
 
 puts "setting up pins"
+RPi::GPIO.reset
 RPi::GPIO.set_numbering :board
 RPi::GPIO.setup SERVO, :as => :output
 RPi::GPIO.setup BLUE_LED, :as => :output
@@ -69,14 +74,13 @@ RPi::GPIO.setup GREEN_LED, :as => :output
 RPi::GPIO.setup YELLOW_LED, :as => :output
 pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
 
-call_new_relic
+metrics = call_new_relic
 
-pwm.start(0)
-set_angle(pwm, 0)
-sleep(3)
-set_angle(pwm, 90)
-sleep(3)
-set_angle(pwm, 180)
+unless metrics.nil?
+  worst_metric = find_worst_metric(metrics)
+  pwm.start(0)
+  set_angle(pwm, worst_metric.percent)
+end
 
 pwm.stop
 RPi::GPIO.reset
