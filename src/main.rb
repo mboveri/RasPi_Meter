@@ -26,17 +26,24 @@ end
 
 def set_angle(pwm, angle)
   duty = angle / 18 + 2
+  puts "Setting servo to #{angle} with duty cycle #{duty}"
   pwm.duty_cycle = duty
-  sleep(3)
-  pwm.duty_cycle = 0
 end
 
+puts "starting"
 PIN_NUM = 03
 PWM_FREQ = 50
 RPi::GPIO.set_numbering :board
 RPi::GPIO.setup PIN_NUM, :as => :output
 pwm = RPi::GPIO::PWM.new(PIN_NUM, PWM_FREQ)
+
 pwm.start(0)
-set_angle(pwm, 30)
+set_angle(pwm, 0)
+sleep(3)
+set_angle(pwm, 90)
+sleep(3)
+set_angle(pwm, 180)
+
 pwm.stop
-RPi::GPIO.clean_up
+RPi::GPIO.reset
+puts "done."
