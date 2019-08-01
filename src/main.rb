@@ -11,3 +11,10 @@ url = "https://insights-api.newrelic.com/v1/accounts/#{account_id}/query?nrql=#{
 
 response = Faraday.get(url, nil, headers)
 puts response.body
+
+PIN_NUM = 03
+RPi::GPIO.set_numbering :board
+RPi::GPIO.setup PIN_NUM, :as => :output
+RPi::GPIO.set_high PIN_NUM
+sleep(5)
+RPi::GPIO.set_low PIN_NUM
