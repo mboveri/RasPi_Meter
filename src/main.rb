@@ -84,7 +84,7 @@ def set_angle(pwm, angle)
 end
 
 def percent_to_angle(percent)
-  (percent / 100) * SERVO_RANGE
+  (percent / 100.0) * SERVO_RANGE
 end
 
 def setup
