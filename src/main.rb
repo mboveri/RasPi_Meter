@@ -52,8 +52,10 @@ end
 
 def critical_light(percent)
   if percent >= 95
+    puts "metric at critical percent #{percent}"
     RPi::GPIO.set_high RED_LED
   else
+    puts "metric not at critical percent: #{percent}"
     RPi::GPIO.set_low RED_LED
   end
 end
