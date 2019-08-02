@@ -47,7 +47,7 @@ def call_new_relic()
   metrics
 end
 
-def find_worst_metric(metrics)
+def worst_metric(metrics)
   [metrics.cpu, metrics.mem, metrics.disk].max_by(&:percent)
 end
 
@@ -158,11 +158,7 @@ end
 def update_display(pwm)
   puts "updating metrics"
   metrics = call_new_relic
-  unless metrics.nil?
-    worst_metric = find_worst_metric(metrics)
-    move_servo_to_percent(pwm, worst_metric.percent)
-    display_metric(pwm, worst_metric)
-  end
+  display_metric(pwm, worst_metric(metrics)) unless metrics.nil?
 end
 
 begin 
