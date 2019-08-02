@@ -118,6 +118,7 @@ end
 def display_metric(pwm, metric)
   puts "displaying #{metric}"
   move_servo_to_percent(pwm, metric.percent)
+  critical_light(metric.percent)
   turn_on_led(metric.led_pin)
 end
 
