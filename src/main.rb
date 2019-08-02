@@ -136,11 +136,11 @@ def debug(pwm)
   puts "red"
   turn_on_led(RED_LED)
 
-  puts "testing critical light: off"
-  critical_light(94)
-  sleep(1)
   puts "testing critical light: on"
   critical_light(95)
+  sleep(1)
+  puts "testing critical light: off"
+  critical_light(94)
 
   puts "testing servo"
   metrics = call_new_relic
