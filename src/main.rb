@@ -97,6 +97,7 @@ def setup
 end
 
 def teardown(pwm)
+  puts "tearing down"
   pwm.stop
   RPi::GPIO.set_low BLUE_LED
   RPi::GPIO.set_low GREEN_LED
