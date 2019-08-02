@@ -50,10 +50,12 @@ def find_worst_metric(metrics)
   [metrics.cpu, metrics.mem, metrics.disk].max_by(&:percent)
 end
 
-def flash_led(pin_num)
-  RPi::GPIO.set_high pin_num
-  sleep(5)
-  RPi::GPIO.set_low pin_num
+def critical_light(percent)
+  if percent >= 95
+    RPi::GPIO.set_high RED_LED
+  else
+    RPi::GPIO.set_low RED_LED
+  end
 end
 
 def turn_on_led(pin)
@@ -110,6 +112,12 @@ def debug(pwm)
   sleep(1)
   turn_on_led(RED_LED)
 
+  puts "testing critical light: off"
+  critical_light(94)
+  sleep(1)
+  puts "testing critical light: on"
+  critical_light(95)
+
   puts "testing servo"
   set_angle(pwm, 0)
   sleep(5)
@@ -117,17 +125,31 @@ def debug(pwm)
   sleep(20)
   set_angle(pwm, 85)
   sleep(20)
+
+  puts "testing normal workflow"
+  update_metrics(pwm)
 end
 
-pwm = setup
-debug(pwm)
+def update_metrics(pwm)
+  puts "updating metrics"
+  metrics = call_new_relic
+  unless metrics.nil?
+    worst_metric = find_worst_metric(metrics)
+    set_angle(pwm, worst_metric.percent)
+    turn_on_led(worst_metric.led_pin)
+    critical_light(worst_metric.percent)
+  end
+end
 
-# metrics = call_new_relic
-# unless metrics.nil?
-#   worst_metric = find_worst_metric(metrics)
-#   set_angle(pwm, worst_metric.percent)
-#   turn_on_led(worst_metric.led_pin)
-# end
+begin 
+  pwm = setup
+  if ENV['DEBUG'] == 'true'
+    debug(pwm)
+  else
+    update_metrics(pwm)
+  end
+ensure
+  teardown(pwm)
+end
 
-teardown(pwm)
 puts "done."
