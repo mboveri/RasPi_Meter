@@ -19,7 +19,7 @@ SERVO_RANGE = 180
 
 # calls new relic to find cluster metrics
 # returns nil if it fails
-def call_new_relic()
+def call_new_relic
   puts "Calling new relic"
   account_id = ENV['NEW_RELIC_ACCOUNT_ID']
   query = ENV['INSIGHTS_QUERY']
@@ -32,10 +32,7 @@ def call_new_relic()
   response = Faraday.get(url, nil, headers)
   unless response.success?
     "Failed to call new relic! Received status: #{response.status} and body #{response.body}" 
-    # turn on red light to denote error
-    critical_light(100)
-    turn_off_all_leds
-    return nil
+    throw Exception
   end
   event = JSON.parse(response.body)['results'].first['events'].first
   mem = (event['mem.percent'] * 100).ceil
@@ -47,6 +44,20 @@ def call_new_relic()
     Metric.new('disk', disk, YELLOW_LED)
   )
   puts "mem: #{metrics.mem}, cpu: #{metrics.cpu}, disk: #{metrics.disk}"
+  metrics
+end
+
+def get_metrics
+  begin
+    metrics = get_metrics
+  rescue => e
+    puts "Failed calling new relic"
+    puts e
+    # turn on red light to denote error
+    turn_off_all_leds
+    critical_light(100)
+    return nil
+  end
   metrics
 end
 
@@ -142,16 +153,18 @@ end
 def debug(pwm)
   puts "testing LEDs"
   turn_on_all_leds
-  metrics = call_new_relic
+  metrics = get_metrics
   turn_off_all_leds
   
-  puts "testing servo"
-  display_metric(pwm, metrics.cpu)
-  sleep(5)
-  display_metric(pwm, metrics.disk)
-  sleep(5)
-  display_metric(pwm, metrics.mem)
-  sleep(5)
+  unless metrics.nil?
+    puts "testing servo"
+    display_metric(pwm, metrics.cpu)
+    sleep(5)
+    display_metric(pwm, metrics.disk)
+    sleep(5)
+    display_metric(pwm, metrics.mem)
+    sleep(5)
+  end
 
   puts "testing normal workflow"
   update_display(pwm)
