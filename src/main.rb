@@ -115,6 +115,12 @@ def teardown(pwm)
   RPi::GPIO.set_low RED_LED
 end
 
+def display_metric(pwm, metric)
+  puts "displaying #{metric}"
+  move_servo_to_percent(pwm, metric.percent)
+  turn_on_led(metric.led_pin)
+end
+
 def debug(pwm)
   puts "testing LEDs"
   turn_on_led(BLUE_LED)
@@ -133,19 +139,24 @@ def debug(pwm)
 
   puts "testing servo"
   metrics = call_new_relic
-  move_servo_to_percent(pwm, worst_metric.percent)
+  display_metric(pwm, metrics.cpu)
+  sleep(5)
+  display_metric(pwm, metrics.mem)
+  sleep(5)
+  display_metric(pwm, metrics.disk)
+  sleep(5)
+
   puts "testing normal workflow"
-  update_metrics(pwm)
+  update_display(pwm)
 end
 
-def update_metrics(pwm)
+def update_display(pwm)
   puts "updating metrics"
   metrics = call_new_relic
   unless metrics.nil?
     worst_metric = find_worst_metric(metrics)
     move_servo_to_percent(pwm, worst_metric.percent)
-    turn_on_led(worst_metric.led_pin)
-    critical_light(worst_metric.percent)
+    display_metric(pwm, worst_metric)
   end
 end
 
@@ -154,7 +165,7 @@ begin
   if ENV['DEBUG'] == 'true'
     debug(pwm)
   else
-    update_metrics(pwm)
+    update_display(pwm)
   end
 ensure
   teardown(pwm)
