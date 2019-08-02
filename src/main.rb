@@ -100,14 +100,14 @@ def setup
   pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
   pwm.start(0)
   puts "setting arm to 0"
-  set_angle(pwm, 0)
+  set_angle(pwm, SERVO_RANGE)
   pwm
 end
 
 def teardown(pwm)
   puts "tearing down"
   puts "setting arm to 0"
-  set_angle(pwm, 0)
+  set_angle(pwm, SERVO_RANGE)
   pwm.stop
   RPi::GPIO.set_low BLUE_LED
   RPi::GPIO.set_low GREEN_LED
@@ -126,13 +126,13 @@ def debug(pwm)
   puts "testing LEDs"
   turn_on_led(BLUE_LED)
   puts "blue"
-  sleep(5)
+  sleep(1)
   puts "green"
   turn_on_led(GREEN_LED)
-  sleep(5)
+  sleep(1)
   puts "yellow"
   turn_on_led(YELLOW_LED)
-  sleep(5)
+  sleep(1)
   puts "red"
   turn_on_led(RED_LED)
 
