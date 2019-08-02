@@ -49,7 +49,7 @@ end
 
 def get_metrics
   begin
-    metrics = get_metrics
+    metrics = call_new_relic
   rescue => e
     puts "Failed calling new relic"
     puts e
@@ -173,7 +173,7 @@ end
 
 def update_display(pwm)
   puts "updating metrics"
-  metrics = call_new_relic
+  metrics = get_metrics
   display_metric(pwm, worst_metric(metrics)) unless metrics.nil?
 end
 
