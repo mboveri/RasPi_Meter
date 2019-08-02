@@ -124,11 +124,15 @@ end
 def debug(pwm)
   puts "testing LEDs"
   turn_on_led(BLUE_LED)
-  sleep(1)
+  puts "blue"
+  sleep(5)
+  puts "green"
   turn_on_led(GREEN_LED)
-  sleep(1)
+  sleep(5)
+  puts "yellow"
   turn_on_led(YELLOW_LED)
-  sleep(1)
+  sleep(5)
+  puts "red"
   turn_on_led(RED_LED)
 
   puts "testing critical light: off"
