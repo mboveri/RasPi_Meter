@@ -84,12 +84,8 @@ def set_angle(pwm, angle)
 end
 
 def move_servo_to_percent(pwm, percent)
-  angle = ((percent / 100.0) * SERVO_RANGE).ceil
+  angle = 180 - ((percent / 100.0) * SERVO_RANGE).ceil
   set_angle(pwm, angle)
-end
-
-def percent_to_angle(percent)
-  ((percent / 100.0) * SERVO_RANGE).ceil
 end
 
 def setup
