@@ -15,6 +15,7 @@ GREEN_LED = 7
 YELLOW_LED = 11
 RED_LED = 13
 PWM_FREQ = 50
+SERVO_RANGE = 180
 
 # calls new relic to find cluster metrics
 # returns nil if it fails
@@ -82,6 +83,10 @@ def set_angle(pwm, angle)
   pwm.duty_cycle = 0
 end
 
+def percent_to_angle(percent)
+  (percent / 100) * SERVO_RANGE
+end
+
 def setup
   puts "setting up pins"
   RPi::GPIO.set_warnings(false)
@@ -122,11 +127,11 @@ def debug(pwm)
   critical_light(95)
 
   puts "testing servo"
-  set_angle(pwm, 0)
+  set_angle(pwm, percent_to_angle(0))
   sleep(5)
-  set_angle(pwm, 70)
+  set_angle(pwm, percent_to_angle(70))
   sleep(20)
-  set_angle(pwm, 85)
+  set_angle(pwm, percent_to_angle(85))
   sleep(20)
 
   puts "testing normal workflow"
@@ -138,7 +143,7 @@ def update_metrics(pwm)
   metrics = call_new_relic
   unless metrics.nil?
     worst_metric = find_worst_metric(metrics)
-    set_angle(pwm, worst_metric.percent)
+    set_angle(pwm, percent_to_angle(worst_metric.percent))
     turn_on_led(worst_metric.led_pin)
     critical_light(worst_metric.percent)
   end
