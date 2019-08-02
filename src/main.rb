@@ -145,9 +145,9 @@ def debug(pwm)
   puts "testing servo"
   display_metric(pwm, metrics.cpu)
   sleep(5)
-  display_metric(pwm, metrics.mem)
-  sleep(5)
   display_metric(pwm, metrics.disk)
+  sleep(5)
+  display_metric(pwm, metrics.mem)
   sleep(5)
 
   puts "testing normal workflow"
