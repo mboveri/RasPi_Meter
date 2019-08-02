@@ -32,6 +32,9 @@ def call_new_relic()
   response = Faraday.get(url, nil, headers)
   unless response.success?
     "Failed to call new relic! Received status: #{response.status} and body #{response.body}" 
+    # turn on red light to denote error
+    critical_light(100)
+    turn_off_all_leds
     return nil
   end
   event = JSON.parse(response.body)['results'].first['events'].first
