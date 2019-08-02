@@ -103,11 +103,15 @@ def setup
   RPi::GPIO.setup RED_LED, :as => :output, :initialize => :low
   pwm = RPi::GPIO::PWM.new(SERVO, PWM_FREQ)
   pwm.start(0)
+  puts "setting arm to 0"
+  set_angle(pwm, 0)
   pwm
 end
 
 def teardown(pwm)
   puts "tearing down"
+  puts "setting arm to 0"
+  set_angle(pwm, 0)
   pwm.stop
   RPi::GPIO.set_low BLUE_LED
   RPi::GPIO.set_low GREEN_LED
@@ -168,8 +172,7 @@ end
 begin 
   pwm = setup
   if ENV['DEBUG'] == 'true'
-    #debug(pwm)
-    set_angle(pwm, 0)
+    debug(pwm)
   else
     update_display(pwm)
   end
