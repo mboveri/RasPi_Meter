@@ -5,7 +5,7 @@ require 'rpi_gpio'
 # always flush STDOUT immediately
 $stdout.sync = true
 
-Metric = Struct.new(:percent, :led_pin)
+Metric = Struct.new(:name, :percent, :led_pin)
 ClusterMetrics = Struct.new(:cpu, :mem, :disk)
 
 # GPIO pins
@@ -39,9 +39,9 @@ def call_new_relic()
   cpu = (event['cpus.percent'] * 100).ceil
   disk = (event['disk.percent'] * 100).ceil
   metrics = ClusterMetrics.new(
-    Metric.new(cpu, BLUE_LED),
-    Metric.new(mem, GREEN_LED),
-    Metric.new(disk, YELLOW_LED)
+    Metric.new('cpu', cpu, BLUE_LED),
+    Metric.new('memory', mem, GREEN_LED),
+    Metric.new('disk', disk, YELLOW_LED)
   )
   puts "mem: #{metrics.mem}, cpu: #{metrics.cpu}, disk: #{metrics.disk}"
   metrics
