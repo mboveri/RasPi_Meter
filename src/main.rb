@@ -71,6 +71,20 @@ def turn_on_led(pin)
   RPi::GPIO.set_high pin
 end
 
+def turn_on_all_leds
+  RPi::GPIO.set_high BLUE_LED
+  RPi::GPIO.set_high GREEN_LED
+  RPi::GPIO.set_high YELLOW_LED
+  RPi::GPIO.set_high RED_LED
+end
+
+def turn_off_all_leds
+  RPi::GPIO.set_low BLUE_LED
+  RPi::GPIO.set_low GREEN_LED
+  RPi::GPIO.set_low YELLOW_LED
+  RPi::GPIO.set_low RED_LED
+end
+
 def set_angle(pwm, angle)
   # 2.5 is the minimum, a.k.a. 0 degrees
   duty = angle / 18 + 2.5
@@ -124,26 +138,11 @@ end
 
 def debug(pwm)
   puts "testing LEDs"
-  turn_on_led(BLUE_LED)
-  puts "blue"
-  sleep(1)
-  puts "green"
-  turn_on_led(GREEN_LED)
-  sleep(1)
-  puts "yellow"
-  turn_on_led(YELLOW_LED)
-  sleep(1)
-  puts "red"
-  turn_on_led(RED_LED)
-
-  puts "testing critical light: on"
-  critical_light(95)
-  sleep(1)
-  puts "testing critical light: off"
-  critical_light(94)
-
-  puts "testing servo"
+  turn_on_all_leds
   metrics = call_new_relic
+  turn_off_all_leds
+  
+  puts "testing servo"
   display_metric(pwm, metrics.cpu)
   sleep(5)
   display_metric(pwm, metrics.mem)
@@ -153,6 +152,7 @@ def debug(pwm)
 
   puts "testing normal workflow"
   update_display(pwm)
+  sleep(5)
 end
 
 def update_display(pwm)
