@@ -168,7 +168,8 @@ end
 begin 
   pwm = setup
   if ENV['DEBUG'] == 'true'
-    debug(pwm)
+    #debug(pwm)
+    set_angle(pwm, 0)
   else
     update_display(pwm)
   end
