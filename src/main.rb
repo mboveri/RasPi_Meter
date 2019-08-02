@@ -170,7 +170,12 @@ begin
   if ENV['DEBUG'] == 'true'
     debug(pwm)
   else
-    update_display(pwm)
+    while true
+      update_display(pwm)
+      seconds_to_sleep = ENV['SLEEP_SECONDS'] || '43200'
+      puts "Sleeping #{seconds_to_sleep} seconds"
+      sleep(seconds_to_sleep.to_i)
+    end
   end
 ensure
   teardown(pwm)
