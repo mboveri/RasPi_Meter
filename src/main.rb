@@ -83,6 +83,11 @@ def set_angle(pwm, angle)
   pwm.duty_cycle = 0
 end
 
+def move_servo_to_percent(pwm, percent)
+  angle = ((percent / 100.0) * SERVO_RANGE).ceil
+  set_angle(pwm, angle)
+end
+
 def percent_to_angle(percent)
   ((percent / 100.0) * SERVO_RANGE).ceil
 end
@@ -127,13 +132,8 @@ def debug(pwm)
   critical_light(95)
 
   puts "testing servo"
-  set_angle(pwm, percent_to_angle(0))
-  sleep(5)
-  set_angle(pwm, percent_to_angle(70))
-  sleep(20)
-  set_angle(pwm, percent_to_angle(85))
-  sleep(20)
-
+  metrics = call_new_relic
+  move_servo_to_percent(pwm, worst_metric.percent)
   puts "testing normal workflow"
   update_metrics(pwm)
 end
@@ -143,7 +143,7 @@ def update_metrics(pwm)
   metrics = call_new_relic
   unless metrics.nil?
     worst_metric = find_worst_metric(metrics)
-    set_angle(pwm, percent_to_angle(worst_metric.percent))
+    move_servo_to_percent(pwm, worst_metric.percent)
     turn_on_led(worst_metric.led_pin)
     critical_light(worst_metric.percent)
   end
