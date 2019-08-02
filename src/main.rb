@@ -155,7 +155,7 @@ def debug(pwm)
 
   puts "testing normal workflow"
   update_display(pwm)
-  sleep(5)
+  sleep(60)
 end
 
 def update_display(pwm)
