@@ -1,5 +1,7 @@
 # DC/OS Doomsday Clock
-We created a [Doomsday Clock](https://en.wikipedia.org/wiki/Doomsday_Clock) for our DC/OS cluster.   Our goal was to map out the potential for failure for our DC/OS cluster based on hardware constraints: CPU/Memory/Disk space.  Each piece of hardware has its own impact on failure; therefore, needing its own scale.  The clock will sample each constraint: CPU/Memory/Disk, then display the currently most used, or closest to midnight constraint.  During the live demo seen below the CPU usage is closest to midnight at just under 70% or about 8:30 PM.  Leveraging LEDs we are able to show which hardware constraint is currently being shown. As we hit 11:24 PM - 95% we also trigger a flashing red LED to signify midnight is close at hand.
+**Goal** - Create a [Doomsday Clock](https://en.wikipedia.org/wiki/Doomsday_Clock) for our DC/OS cluster.   
+
+Our focus was to map out the potential for failure within our DC/OS cluster based on hardware constraints: CPU / Memory / Disk space.  Each piece of hardware is an opportunity for failure, thus needing its own scale.  Every hour, the clock will sample each constraint: CPU / Memory / Disk, then display the currently most used, or closest to midnight constraint.  During the live demo seen below the CPU usage is closest to midnight at just under 70% or about 8:30 PM.  Leveraging LEDs we are able to show which hardware constraint is currently being shown. As we hit 11:24 PM - 95% we also trigger a flashing red LED to signify midnight is close at hand.
 
 ### The Team
 ![The Team](/images/The_Team.png "The Team")
