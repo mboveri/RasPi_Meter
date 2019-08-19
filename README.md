@@ -17,7 +17,7 @@ Left to Right - Matt Boveri, David Crowder, Sam Livingston, Ian Kottman, Anthony
 
 ![Cluster Clock Memory](/images/clock_face_MEM.jpg?raw=true "Cluster Clock Memory")
 
-![Cluster Clock Raspberry Pi Top](/images/PI_top.jpg.jpg?raw=true "Cluster Clock Raspberry Pi Top")
+![Cluster Clock Raspberry Pi Top](/images/PI_top.jpg?raw=true "Cluster Clock Raspberry Pi Top")
 
 ![Cluster Clock Raspberry Pi Side](/images/PI_side.jpg?raw=true "Cluster Clock Raspberry Pi Side")
 
