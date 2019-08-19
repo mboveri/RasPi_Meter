@@ -32,7 +32,7 @@ docker push scghost/clusterclock:1.0
 ```
 # Raspberry Pi Configuration
 
-Using the below chart for the Raspberry Pi we mapped the servo and led to available GPIO pins and grounds.  As we were not using a breadboard for this proof of concept each GPIO connection also had a ground connection.  The connections are as follows:
+Using the below chart for the Raspberry Pi we mapped the servo and led to available GPIO pins and grounds.  As we were not using a breadboard for this proof of concept each GPIO connection also had a ground connection.  The GPIO connections are as follows:
 1. Servo - GPIO2 / Raspberry Pi slot 3
 1. Blue LED - GPIO3 / Raspberry Pi slot 5
 1. Green LED - GPIO4 / Raspberry Pi slot 7
