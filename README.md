@@ -33,11 +33,11 @@ docker push {your_own_path}/clustermeter:1.0
 # Raspberry Pi Configuration
 
 Using the below chart for the Raspberry Pi we mapped the servo and led to available GPIO pins and grounds.  As we were not using a breadboard for this proof of concept each GPIO connection also had a ground connection.  The connections are as follows:
-1. Servo - GPIO2 / Raspberry PI slot 3
-1. Blue LED - GPIO3 / Raspberry PI slot 5
-1. Green LED - GPIO4 / Raspberry PI slot 7
-1. Yellow LED - GPIO17 / Raspberry PI slot 11
-1. Red LED - GPIO27 / Raspberry PI slot 13
+1. Servo - GPIO2 / Raspberry Pi slot 3
+1. Blue LED - GPIO3 / Raspberry Pi slot 5
+1. Green LED - GPIO4 / Raspberry Pi slot 7
+1. Yellow LED - GPIO17 / Raspberry Pi slot 11
+1. Red LED - GPIO27 / Raspberry Pi slot 13
 
 Using the [Plastic Gear Analog servo from Micro Center](https://www.microcenter.com/product/487781/mini-analog-servo) we were able to calculate the proper PWM frequency and servo range of 50 and 180 respectively.
 
