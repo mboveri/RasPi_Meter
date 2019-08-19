@@ -1,7 +1,7 @@
 # DC/OS Capacity Meter
 **Goal** - Create a capacity meter for our DC/OS cluster.   
 
-Our focus was to map out the potential for failure within our DC/OS cluster based on hardware constraints: CPU / Memory / Disk space. Every hour the meter will sample the usage and display the currently most used. During the live demo seen below CPU is the most utilized at just under 70%. We use colorful LEDs to signify which hardware type utilization is currently displayed. As we hit 95% we also trigger a flashing red LED to alert that we are nearly at capacity.
+Our focus was to map out the potential for failure within our DC/OS cluster based on hardware constraints: CPU / Memory / Disk space. Every hour the meter will sample the usage and display the currently most used. During the live demo seen below CPU is the most utilized at just under 70%. We use colorful LEDs to signify which hardware type is currently displayed. As we hit 95% we also trigger a flashing red LED to alert that we are nearly at capacity.
 
 ### The Team
 ![The Team](/images/The_Team.png "The Team")
